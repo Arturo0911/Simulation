@@ -1,47 +1,99 @@
 package helpers
 
 import (
+	"errors"
 	"flag"
 	"fmt"
-	"time"
+	"log"
+	"strconv"
+	"strings"
 
-	"github.com/mbndr/figlet4go"
+	"github.com/Arturo0911/Simulation/distribution"
 )
 
 var (
-	distribution = flag.String("distribution", "binomial", "Kind of distribution to choose")
-	elements     = flag.Int("n", 0, "aleatory sample")
-	unknown      = flag.Int("x", 0, "aleatory sample")
-	probability  = flag.Float64("p", 0.0, "probability success")
+	dist        = flag.String("distribution", "binomial", "Kind of distribution to choose")
+	elements    = flag.Int("n", 0, "aleatory sample")
+	unknown     = flag.Int("x", 0, "aleatory sample")
+	probability = flag.Float64("p", 0.0, "probability success")
+	keyword     = flag.String("k", "eq",
+		"At least (at), at the most (am) or exactly the same(eq); these values should be separeted with a comma to be parsed")
 )
 
-func banner() {
-	time.Sleep(1 * time.Millisecond)
-	ascii := figlet4go.NewAsciiRender()
+// Binomial
+func binomialProcess(flag_ string, n int, p float64) (float64, error) {
 
-	// Adding the colors to RenderOptions
-	options := figlet4go.NewRenderOptions()
+	key := strings.Split(flag_, ",")
+	var finalResult float64
 
-	term, _ := figlet4go.NewTrueColorFromHexString("885DBA")
-	options.FontColor = []figlet4go.Color{
-		// Colors can be given by default ansi color codes...
-		figlet4go.ColorGreen,
-		figlet4go.ColorYellow,
-		figlet4go.ColorCyan,
-		// ...or by an hex string...
-		term,
-		// ...or by an TrueColor object with rgb values
-		//figlet4go.TrueColor{136, 93, 186},
+	if len(key) <= 1 {
+		return 0, errors.New("you should to pass second parameter as the number to get the distribution")
 	}
 
-	renderStr, _ := ascii.RenderOpts("BINOMIAL DISTRIBUTIONS", options)
-	fmt.Print(renderStr)
-	time.Sleep(1 * time.Microsecond)
+	switch key[0] {
+	case "eq":
+		number, err := strconv.Atoi(key[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+		//in the case that the required process is exactky equals
+		newDist := distribution.NewDistribution(n, number, p)
+
+		return newDist.DistributionBinomial(), nil
+	case "at": // means  value >= x
+
+		number, err := strconv.Atoi(key[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+		for i := number; i <= n; i++ {
+			newDist := distribution.NewDistribution(n, i, p)
+			finalResult += newDist.DistributionBinomial()
+		}
+		return finalResult, nil
+
+	case "am": // means  value <= x
+
+		number, err := strconv.Atoi(key[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+		for i := number; i >= 0; i-- {
+			newDist := distribution.NewDistribution(n, i, p)
+			finalResult += newDist.DistributionBinomial()
+		}
+		return finalResult, nil
+	}
+
+	return finalResult, nil
+
 }
 
-func CLIBanner() {
-	banner()
+// Geometric
+func geometricProcess() {
+
+}
+
+func poissonProces() {}
+
+func CLI() {
+	Banner()
+	fmt.Println("USE THE FOLLOWING COMMANDS TO GET THE RESULT")
 	flag.Parse()
-	fmt.Printf("\n[*] distribution %v, elements %v, unknow variable %v and probability %v",
-		*distribution, *elements, *unknown, *probability)
+	fmt.Printf("\n[*] distribution %v, elements %v, unknow variable %v and probability %v\n\n",
+		*dist, *elements, *unknown, *probability)
+
+	switch *dist {
+	case "binomial":
+		result, err := binomialProcess(*keyword, *elements, *probability)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(result)
+	case "geometric":
+		geometricProcess()
+	case "poisson":
+		poissonProces()
+	}
+
 }

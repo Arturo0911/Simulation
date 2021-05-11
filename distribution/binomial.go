@@ -1,8 +1,10 @@
-package evaluation
+package distribution
 
 import (
 	"fmt"
+	"log"
 	"math"
+	"strconv"
 )
 
 //		888888b.  d8b                             d8b        888
@@ -24,9 +26,9 @@ import (
 //		8888888P" 888 88888P' "Y888888    88888888P"  "Y88888 "Y888888 "Y88P" 888  888
 
 type BinomialDitribution struct {
-	N int
-	P float64
-	X int
+	N int     // Quantity of elements to be processed
+	P float64 // probability success about that event
+	X int     // Variable to discover
 }
 
 type Distribution interface {
@@ -45,7 +47,7 @@ func NewDistribution(n, x int, p float64) *BinomialDitribution {
 
 func Factorial(value int) int {
 
-	if value == 0 {
+	if value == 0 || value == 1 {
 		return 1
 	}
 
@@ -62,8 +64,14 @@ func (bin *BinomialDitribution) Combinatory(n, x int) float64 {
 
 }
 
-func (bin *BinomialDitribution) DistributionBinomial() string {
+func (bin *BinomialDitribution) DistributionBinomial() float64 {
 
-	return fmt.Sprintf("%0.4f", (bin.Combinatory(bin.N, bin.X))*(math.Pow(bin.P,
-		float64(bin.X)))*(math.Pow(float64(1-bin.P), float64(bin.N-bin.X))))
+	final, err := strconv.ParseFloat(fmt.Sprintf("%0.4f", (bin.Combinatory(bin.N, bin.X))*(math.Pow(bin.P,
+		float64(bin.X)))*(math.Pow(float64(1-bin.P), float64(bin.N-bin.X)))), 64)
+
+	if err != nil {
+		log.Fatal(err)
+		return 0
+	}
+	return final
 }
