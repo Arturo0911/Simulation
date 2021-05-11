@@ -31,6 +31,11 @@ type DistributionParameters struct {
 	X int     // Variable to discover
 }
 
+type GeometricParameters struct {
+	P float64
+	X int
+}
+
 type Distribution interface {
 	Combinatory() float64
 	DistributionBinomial() float64
@@ -44,6 +49,13 @@ func NewDistribution(n, x int, p float64) *DistributionParameters {
 		N: n,
 		X: x,
 		P: p,
+	}
+}
+
+func NewGeoDistribution(p float64, x int) *GeometricParameters {
+	return &GeometricParameters{
+		P: p,
+		X: x,
 	}
 }
 
@@ -78,9 +90,9 @@ func (bin *DistributionParameters) DistributionBinomial() float64 {
 	return final
 }
 
-func (geo *DistributionParameters) DistributionGeometric() float64 {
-
-	return 0
+func (geo *GeometricParameters) DistributionGeometric() float64 {
+	// Time to test to get the frist success
+	return (geo.P * math.Pow((1-geo.P), float64(geo.X-1)))
 }
 
 func (poisson *DistributionParameters) DistributionPoisson() float64 {

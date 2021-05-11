@@ -71,8 +71,9 @@ func binomialProcess(flag_ string, n int, p float64) (float64, error) {
 }
 
 // Geometric
-func geometricProcess() {
-
+func geometricProcess(p float64, x int) (float64, error) {
+	geoDis := distribution.NewGeoDistribution(p, x)
+	return geoDis.DistributionGeometric(), nil
 }
 
 func poissonProces() {}
@@ -90,9 +91,13 @@ func CLI() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(result)
+		fmt.Println("Distribution binomial is => ", result)
 	case "geometric":
-		geometricProcess()
+		value, err := geometricProcess(*probability, *unknown)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Distribution geometric is => ", value)
 	case "poisson":
 		poissonProces()
 	}
