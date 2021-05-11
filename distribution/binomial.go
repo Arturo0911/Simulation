@@ -25,7 +25,7 @@ import (
 //		888  .d88P888     X88Y88b. 888    888888 d88PY88b 888Y88b. 888Y88..88P888  888
 //		8888888P" 888 88888P' "Y888888    88888888P"  "Y88888 "Y888888 "Y88P" 888  888
 
-type BinomialDitribution struct {
+type DistributionParameters struct {
 	N int     // Quantity of elements to be processed
 	P float64 // probability success about that event
 	X int     // Variable to discover
@@ -33,12 +33,14 @@ type BinomialDitribution struct {
 
 type Distribution interface {
 	Combinatory() float64
-	DistributionBinomial() string
+	DistributionBinomial() float64
+	DistributionGeometric() float64
+	DistributionPoisson() float64
 }
 
-func NewDistribution(n, x int, p float64) *BinomialDitribution {
+func NewDistribution(n, x int, p float64) *DistributionParameters {
 
-	return &BinomialDitribution{
+	return &DistributionParameters{
 		N: n,
 		X: x,
 		P: p,
@@ -58,13 +60,13 @@ func Factorial(value int) int {
 
 }
 
-func (bin *BinomialDitribution) Combinatory(n, x int) float64 {
+func (bin *DistributionParameters) Combinatory(n, x int) float64 {
 
 	return float64(Factorial(bin.N) / (Factorial(bin.N-bin.X) * Factorial(bin.X)))
 
 }
 
-func (bin *BinomialDitribution) DistributionBinomial() float64 {
+func (bin *DistributionParameters) DistributionBinomial() float64 {
 
 	final, err := strconv.ParseFloat(fmt.Sprintf("%0.4f", (bin.Combinatory(bin.N, bin.X))*(math.Pow(bin.P,
 		float64(bin.X)))*(math.Pow(float64(1-bin.P), float64(bin.N-bin.X)))), 64)
@@ -74,4 +76,13 @@ func (bin *BinomialDitribution) DistributionBinomial() float64 {
 		return 0
 	}
 	return final
+}
+
+func (geo *DistributionParameters) DistributionGeometric() float64 {
+
+	return 0
+}
+
+func (poisson *DistributionParameters) DistributionPoisson() float64 {
+	return 0
 }
