@@ -36,6 +36,11 @@ type GeometricParameters struct {
 	X int
 }
 
+type PoissonParameters struct {
+	U int
+	X int
+}
+
 type Distribution interface {
 	Combinatory() float64
 	DistributionBinomial() float64

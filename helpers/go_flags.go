@@ -5,20 +5,30 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math"
 	"strconv"
 	"strings"
 
 	"github.com/Arturo0911/Simulation/distribution"
 )
 
+var euler = math.Exp(float64(1))
 var (
-	dist        = flag.String("distribution", "binomial", "Kind of distribution to choose")
+	dist        = flag.String("dist", "binomial", "Kind of distribution to choose")
 	elements    = flag.Int("n", 0, "aleatory sample")
 	unknown     = flag.Int("x", 0, "aleatory sample")
 	probability = flag.Float64("p", 0.0, "probability success")
 	keyword     = flag.String("k", "eq",
 		"At least (at), at the most (am) or exactly the same(eq); these values should be separeted with a comma to be parsed")
 )
+
+func usage() {
+	fmt.Println("The right words ar bin =>(binomial) \n or")
+	fmt.Println("To choose binomial distribution use -dist=bin -n=<number of elements> -x=<number to get success> -p probability -k=at,<number> or -k=am,<number> or -k=eq,<number>")
+	fmt.Println("The right word ar geo =>(geometric)\n or")
+	fmt.Println("The right words ar pos =>(poisson)\n or")
+	fmt.Println("The right words ar neg =>(binomial negative)\n or")
+}
 
 // Binomial
 func binomialProcess(flag_ string, n int, p float64) (float64, error) {
@@ -79,8 +89,10 @@ func geometricProcess(p float64, x int) (float64, error) {
 func poissonProces() {}
 
 func CLI() {
+	fmt.Println(euler)
 	Banner()
 	fmt.Println("USE THE FOLLOWING COMMANDS TO GET THE RESULT")
+	fmt.Print("\n[*]Starting CLI")
 	flag.Parse()
 	fmt.Printf("\n[*] distribution %v, elements %v, unknow variable %v and probability %v\n\n",
 		*dist, *elements, *unknown, *probability)
@@ -102,10 +114,7 @@ func CLI() {
 		poissonProces()
 
 	default:
-		fmt.Println("The right words ar bin =>(binomial) \n or")
-		fmt.Println("The right word ar geo =>(geometric)\n or")
-		fmt.Println("The right words ar pos =>(poisson)\n or")
-		fmt.Println("The right words ar neg =>(binomial negative)\n or")
+		usage()
 	}
 
 }
