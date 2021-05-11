@@ -27,7 +27,8 @@ func binomialProcess(flag_ string, n int, p float64) (float64, error) {
 	var finalResult float64
 
 	if len(key) <= 1 {
-		return 0, errors.New("you should to pass second parameter as the number to get the distribution")
+		return finalResult,
+			errors.New("you should to pass second parameter as the number to get the distribution")
 	}
 
 	switch key[0] {
