@@ -86,20 +86,26 @@ func CLI() {
 		*dist, *elements, *unknown, *probability)
 
 	switch *dist {
-	case "binomial":
+	case "bin":
 		result, err := binomialProcess(*keyword, *elements, *probability)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println("Distribution binomial is => ", result)
-	case "geometric":
+	case "geo":
 		value, err := geometricProcess(*probability, *unknown)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println("Distribution geometric is => ", value)
-	case "poisson":
+	case "pos":
 		poissonProces()
+
+	default:
+		fmt.Println("The right words ar bin =>(binomial) \n or")
+		fmt.Println("The right word ar geo =>(geometric)\n or")
+		fmt.Println("The right words ar pos =>(poisson)\n or")
+		fmt.Println("The right words ar neg =>(binomial negative)\n or")
 	}
 
 }

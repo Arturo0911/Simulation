@@ -41,6 +41,7 @@ type Distribution interface {
 	DistributionBinomial() float64
 	DistributionGeometric() float64
 	DistributionPoisson() float64
+	BinomialNegative() float64
 }
 
 func NewDistribution(n, x int, p float64) *DistributionParameters {
