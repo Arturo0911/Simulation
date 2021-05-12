@@ -15,7 +15,7 @@ import (
 var euler = math.Exp(float64(1))
 var (
 	dist        = flag.String("dist", "binomial", "Kind of distribution to choose")
-	value       = flag.Int("u", 0, "value desired")
+	value       = flag.Float64("u", 0, "value desired")
 	elements    = flag.Int("n", 0, "aleatory sample")
 	unknown     = flag.Int("x", 0, "aleatory sample")
 	probability = flag.Float64("p", 0.0, "probability success")
@@ -43,7 +43,7 @@ func binomialProcess(flag_ string, n int, p float64) (float64, error) {
 	}
 
 	switch key[0] {
-	case "eq":
+	case "eq": // means value == x
 		number, err := strconv.Atoi(key[1])
 		if err != nil {
 			log.Fatal(err)
@@ -87,7 +87,12 @@ func geometricProcess(p float64, x int) (float64, error) {
 	return geoDis.DistributionGeometric(), nil
 }
 
-func poissonProces() {}
+func poissonProces(u, x int) (float64, error) {
+
+	possDis := distribution.NewPoissonDistribution(u, x)
+	return possDis.DistributionPoisson(), nil
+
+}
 
 func CLI() {
 	fmt.Println(euler)
@@ -114,13 +119,22 @@ func CLI() {
 	case "pos":
 
 		switch *value {
-
 		default:
-			fmt.Println("You should to choose the -u flag with a value different to zero")
-
+			fmt.Println("The parameter of u should be a number more than 0")
 		}
 
-		poissonProces()
+		if *value > 0 {
+			poissonVal, err := poissonProces(int(*value), *unknown)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println(poissonVal)
+		} else {
+			if math.IsNaN(*value) {
+				fmt.Println("Value cannot be an NaN")
+			}
+		}
 
 	default:
 		usage()

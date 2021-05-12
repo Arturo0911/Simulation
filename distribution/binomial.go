@@ -65,6 +65,13 @@ func NewGeoDistribution(p float64, x int) *GeometricParameters {
 	}
 }
 
+func NewPoissonDistribution(u, x int) *PoissonParameters {
+	return &PoissonParameters{
+		U: u,
+		X: x,
+	}
+}
+
 func Factorial(value int) int {
 
 	if value == 0 || value == 1 {
@@ -101,6 +108,6 @@ func (geo *GeometricParameters) DistributionGeometric() float64 {
 	return (geo.P * math.Pow((1-geo.P), float64(geo.X-1)))
 }
 
-func (poisson *DistributionParameters) DistributionPoisson() float64 {
-	return 0
+func (poisson *PoissonParameters) DistributionPoisson() float64 {
+	return (math.Exp(float64(-poisson.U)) * math.Pow(float64(poisson.U), float64(poisson.X))) / float64(Factorial(poisson.X))
 }
