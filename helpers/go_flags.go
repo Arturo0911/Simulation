@@ -15,6 +15,7 @@ import (
 var euler = math.Exp(float64(1))
 var (
 	dist        = flag.String("dist", "binomial", "Kind of distribution to choose")
+	value       = flag.Int("u", 0, "value desired")
 	elements    = flag.Int("n", 0, "aleatory sample")
 	unknown     = flag.Int("x", 0, "aleatory sample")
 	probability = flag.Float64("p", 0.0, "probability success")
@@ -111,6 +112,14 @@ func CLI() {
 		}
 		fmt.Println("Distribution geometric is => ", value)
 	case "pos":
+
+		switch *value {
+
+		default:
+			fmt.Println("You should to choose the -u flag with a value different to zero")
+
+		}
+
 		poissonProces()
 
 	default:
