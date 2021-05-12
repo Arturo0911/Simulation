@@ -111,3 +111,8 @@ func (geo *GeometricParameters) DistributionGeometric() float64 {
 func (poisson *PoissonParameters) DistributionPoisson() float64 {
 	return (math.Exp(float64(-poisson.U)) * math.Pow(float64(poisson.U), float64(poisson.X))) / float64(Factorial(poisson.X))
 }
+
+func (bin *DistributionParameters) BinomialNegative() float64 {
+
+	return 0
+}

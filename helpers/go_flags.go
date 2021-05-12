@@ -12,24 +12,15 @@ import (
 	"github.com/Arturo0911/Simulation/distribution"
 )
 
-var euler = math.Exp(float64(1))
 var (
 	dist        = flag.String("dist", "binomial", "Kind of distribution to choose")
 	value       = flag.Float64("u", 0, "value desired")
 	elements    = flag.Int("n", 0, "aleatory sample")
-	unknown     = flag.Int("x", 0, "aleatory sample")
+	unknown     = flag.Float64("x", 0, "aleatory sample")
 	probability = flag.Float64("p", 0.0, "probability success")
 	keyword     = flag.String("k", "eq",
 		"At least (at), at the most (am) or exactly the same(eq); these values should be separeted with a comma to be parsed")
 )
-
-func usage() {
-	fmt.Println("The right words ar bin =>(binomial) \n or")
-	fmt.Println("To choose binomial distribution use -dist=bin -n=<number of elements> -x=<number to get success> -p probability -k=at,<number> or -k=am,<number> or -k=eq,<number>")
-	fmt.Println("The right word ar geo =>(geometric)\n or")
-	fmt.Println("The right words ar pos =>(poisson)\n or")
-	fmt.Println("The right words ar neg =>(binomial negative)\n or")
-}
 
 // Binomial
 func binomialProcess(flag_ string, n int, p float64) (float64, error) {
@@ -87,20 +78,23 @@ func geometricProcess(p float64, x int) (float64, error) {
 	return geoDis.DistributionGeometric(), nil
 }
 
-func poissonProces(u, x int) (float64, error) {
+func poissonProces(u int) (float64, error) {
 
-	possDis := distribution.NewPoissonDistribution(u, x)
-	return possDis.DistributionPoisson(), nil
+	if !math.IsNaN(*unknown) {
+		possDis := distribution.NewPoissonDistribution(u, int(*unknown))
+		return possDis.DistributionPoisson(), nil
+	} else {
+		return 0, errors.New("'x' value cannot be empty or NaN")
+	}
 
 }
 
 func CLI() {
-	fmt.Println(euler)
 	Banner()
-	fmt.Println("USE THE FOLLOWING COMMANDS TO GET THE RESULT")
-	fmt.Print("\n[*]Starting CLI")
+	fmt.Print("\n[*] If you not include the respective tag and the value, then default value will be zero.\n")
+	fmt.Print("[*] Starting CLI\n")
 	flag.Parse()
-	fmt.Printf("\n[*] distribution %v, elements %v, unknow variable %v and probability %v\n\n",
+	fmt.Printf("[*] distribution %v, elements %v, unknow variable %v and probability %v\n\n",
 		*dist, *elements, *unknown, *probability)
 
 	switch *dist {
@@ -111,33 +105,26 @@ func CLI() {
 		}
 		fmt.Println("Distribution binomial is => ", result)
 	case "geo":
-		value, err := geometricProcess(*probability, *unknown)
+		value, err := geometricProcess(*probability, int(*unknown))
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println("Distribution geometric is => ", value)
 	case "pos":
 
-		switch *value {
-		default:
-			fmt.Println("The parameter of u should be a number more than 0")
-		}
-
-		if *value > 0 {
-			poissonVal, err := poissonProces(int(*value), *unknown)
+		if math.IsNaN(*value) {
+			fmt.Println("Value cannot be empty")
+		} else {
+			poissonVal, err := poissonProces(int(*value))
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			fmt.Println(poissonVal)
-		} else {
-			if math.IsNaN(*value) {
-				fmt.Println("Value cannot be an NaN")
-			}
+			fmt.Printf("value is %0.5f or %0.2f percent \n", poissonVal, (poissonVal * 100))
 		}
 
 	default:
-		usage()
+		fmt.Println("<=>")
 	}
 
 }
