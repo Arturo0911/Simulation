@@ -79,6 +79,9 @@ class TransformationInverse:
         self.seed_values = None
         # self.random_num = random.uniform(0, 1)
 
+    def binomial_distributed(self) -> None:
+        return None
+
     def cmd(self) -> None:
         print("User:~$ En cualquier momento puedes presionar 'ENTER' y salir del programa")
         while True:
