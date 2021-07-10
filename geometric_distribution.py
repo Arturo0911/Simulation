@@ -46,7 +46,6 @@ def making_values_geometrict(k_values: int, pr: float) -> int:
 
     print("\n\n")
     print("[*] El valor aleatorio generados es: %s"%uniform_val)
-    # uniform_val = 0.9
     x_value = None
     counter = 1
 
@@ -62,28 +61,42 @@ def making_values_geometrict(k_values: int, pr: float) -> int:
 
 def main():
     # making_values_geometrict(15, 0.4)
-    try:
-        print("[*] Distribucion geométrica")
-        while True:
-            k_val = int(input("[*] ingresa la cantidad de valores que debe tener k: "))
-            if k_val < 1000:
-                break
-            else:
-                print("[x] El valor de k no debe ser mayor a 1000")
+    while True:
+        try:
+            print("[*] Distribucion geométrica")
+            while True:
+                k_val = int(input("[*] ingresa la cantidad de valores que debe tener k: "))
+                if k_val < 1000:
+                    break
+                else:
+                    print("[x] El valor de k no debe ser mayor a 1000")
 
-        while True:
-            pr_val = float(input("[*] Ingrese el valor de pr: "))
-            if pr_val < 1:
+            while True:
+                pr_val = float(input("[*] Ingrese el valor de pr: "))
+                if pr_val < 1:
+                    break
+                else:
+                    print("[x] El valor de pr debe ser un valor probabilístico, o sea entre 0 y 1")
+            
+            making_values_geometrict(k_val, pr_val)
+        
+        except KeyboardInterrupt:
+            print("[*] Saliendo...")
+        except Exception:
+            print("[*] Saliendo")
+        
+        print("[*] ¿Deseas hacer otra prueba? ")
+        try:
+            test = input("inserte opction S/N> ")
+            test = test.lower()
+            
+            if test != "s":
                 break
             else:
-                print("[x] El valor de pr debe ser un valor probabilístico, o sea entre 0 y 1")
-        
-        making_values_geometrict(k_val, pr_val)
-        
-    except KeyboardInterrupt:
-        print("[*] Saliendo...")
-    except Exception:
-        print("[*] Saliendo")
+                continue
+        except:
+            print("[x] Opcion incorrecta")
+            print("[*] Saliendo...")
     
 
 if __name__ == "__main__":
