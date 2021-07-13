@@ -48,18 +48,24 @@ class Binomial:
         """
         counter = 0
         prob_value = pow(float(1 -success), n_number)
+        f_val = prob_value
+        stack = list()
+        stack.append(prob_value)
         while True:
             
-            if u_test_case < prob_value:
+            if u_test_case < f_val:
                 break 
             else:
-                prob_value += (float(n_number -  counter) / float(counter + 1)) * ((success)/(1-success) )*prob_value
+                prob_value = ((float(n_number -  counter) / float(counter + 1)) * ((success)/(1-success)))*prob_value
+                f_val += prob_value
                 counter += 1
+                stack.append(f_val)
 
+        print(stack)
         return counter
     def calculating_number_success(self, number:int, success:float) -> list:
 
-        return ["number of success {} for {}: ".format(str(self._init_process(number, success, i)), i) for i in self.rand_values]
+        return ["number of success {} for {}: ".format(str(self._init_process(number, success, i)), i) for i in [0.76, 0.97, 0.544, 0.236, 0.7588]]
 
 
 def main() -> None:
@@ -67,9 +73,9 @@ def main() -> None:
     try:
         uniform_values = int(input("[*] Ingrese el número de elementos uniformes~# "))
         binomial = Binomial(uniform_values)
-        pprint(binomial.rand_values)
+        # pprint(binomial.rand_values)
         x_success = float(input("[*] Ingrese la probabilidad del éxito: "))
-        n_number = int(input("[*] Ingrese el número de pruebas a realizar"))
+        n_number = int(input("[*] Ingrese el número de pruebas a realizar: "))
         pprint(binomial.calculating_number_success(n_number, x_success))
     except ValueError as e:
         raise ValueError("The value cannot be processed")
