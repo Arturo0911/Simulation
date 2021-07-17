@@ -75,19 +75,18 @@ def main():
                     break
                 else:
                     print("[x] El valor de pr debe ser un valor probabilístico, o sea entre 0 y 1")
-            
+
             making_values_geometrict(k_val, pr_val)
-        
+
         except KeyboardInterrupt:
             print("[*] Saliendo...")
         except Exception:
             print("[*] Saliendo")
-        
+
         print("[*] ¿Deseas hacer otra prueba? ")
         try:
             test = input("inserte opction S/N> ")
             test = test.lower()
-            
             if test != "s":
                 print("[*] Saliendo...")
                 break
