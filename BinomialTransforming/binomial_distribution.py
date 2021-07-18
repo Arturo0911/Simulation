@@ -1,4 +1,4 @@
-#/usr/bin/python3
+#!/usr/bin/python3
 
 
 from pprint import pprint
@@ -40,9 +40,9 @@ class Binomial:
 
     def __init__(self, uniform_values: int) -> None:
         self.rand_values = [uniform(0,1) for _ in range(uniform_values)]
-    
+
     def create_binomial_elements(self, success_value: float, number_test: int) -> list:
-        
+
         stack = list()
         p_value = pow((1 - success_value),number_test)
         f_value = p_value
@@ -58,7 +58,7 @@ class Binomial:
         """
         :param n_number
         :param success
-        :param u_test_case 
+        :param u_test_case
         """
         counter = 0
         prob_value = pow(float(1 -success), n_number)
@@ -66,9 +66,9 @@ class Binomial:
         stack = list()
         stack.append(prob_value)
         while True:
-            
+
             if u_test_case < f_val:
-                break 
+                break
             else:
                 prob_value = ((float(n_number -  counter) / float(counter + 1)) * ((success)/(1-success)))*prob_value
                 f_val += prob_value
@@ -79,19 +79,22 @@ class Binomial:
     def calculating_number_success(self, number:int, success:float) -> list:
 
         print("[*] Número de elementos de probabilidades son: \n")
-        pprint(self.create_binomial_elements(success, number))
+        print("======================================")
+        print(self.create_binomial_elements(success, number))
+        print("======================================")
         print("\n")
-        print("[*] Uniformes generados: \n")
+        print("======================================")
+        print("[*] El número de simulaciones es: \n")
         pprint(self.rand_values)
+        print("======================================")
         print("\n\n")
         return ["[*] Éxito en la posicion: {} para el uniforme: {}".format(str(self._init_process(number, success, i)), i) for i in self.rand_values]
 
 
 def main():
 
-    
     try:
-        uniform_values = int(input("[*] Ingrese el número de elementos uniformes~# "))
+        uniform_values = int(input("[*] Ingrese el número de elementos simulaciones: "))
         binomial = Binomial(uniform_values)
         # pprint(binomial.rand_values)
         x_success = float(input("[*] Ingrese la probabilidad del éxito: "))
@@ -101,7 +104,7 @@ def main():
         raise ValueError("The value cannot be processed")
     except KeyboardInterrupt:
         print("\n[*] Saliendo...")
-    
+
 
 if __name__ == "__main__":
     main()
