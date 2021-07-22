@@ -1,13 +1,33 @@
-
+#!/usr/bin/python3
 
 from random import uniform
 from math import exp
+import sys
+
 
 print("""
-    [...]           Owner: Arturo Negreiros Samanez                             [...]
-    [...]           date:  09/07/2021                                           [...]
-    [...]           follow me: https://twitter.com/DevTuron                     [...]
-    [...]           source code: https://github.com/Arturo0911/Simulation       [...]
+
+ _____      _                     
+|  __ \    (_)                    
+| |__) |__  _ ___ ___  ___  _ __  
+|  ___/ _ \| / __/ __|/ _ \| '_ \ 
+| |  | (_) | \__ \__ \ (_) | | | |
+|_|   \___/|_|___/___/\___/|_| |_|
+
+
+     _ _     _        _ _           _   _             
+    | (_)   | |      (_) |         | | (_)            
+  __| |_ ___| |_ _ __ _| |__  _   _| |_ _  ___  _ __  
+ / _` | / __| __| '__| | '_ \| | | | __| |/ _ \| '_ \ 
+| (_| | \__ \ |_| |  | | |_) | |_| | |_| | (_) | | | |
+ \__,_|_|___/\__|_|  |_|_.__/ \__,_|\__|_|\___/|_| |_|
+
+
+
+        [...]           Owner: Arturo Negreiros Samanez                             [...]
+        [...]           date:  09/07/2021                                           [...]
+        [...]           follow me: https://twitter.com/DevTuron                     [...]
+        [...]           source code: https://github.com/Arturo0911/Simulation       [...]
 """)
 
 # achieving an array with the number of
@@ -41,7 +61,7 @@ def make_simulations(lambda_value, k_items):
 
 
 def main():
-
+    print("[*] Puedes salir en cualquier momento del programa presionando CTRL C")
     while True:
         try:
             k_values  = int(input("[*] Ingrese el número de simulaciones (k) que desee probar: "))
@@ -49,8 +69,12 @@ def main():
                 print("[*] Ingresaste un número positivo, por lo que el número se lo tomará como positivo")
                 k_values = abs(k_values)
             break
+        except KeyboardInterrupt as e:
+           print("\n[*] Saliendo...")
+           sys.exit(0)
         except:
             print("[*] Debe ingresar un número entero positivo")
+
 
     while True:
         try:
@@ -59,6 +83,9 @@ def main():
                 print("[!] debe ser un valor positivo lambda; por lo que se convertirá tu valor negativo a positivo")
                 lambda_val = abs(lambda_val)
             break
+        except KeyboardInterrupt:
+            print("\n[*] Saliendo...")
+            sys.exit(0)
         except:
             print("[X] Debe ingresar un valor numérico")
 
